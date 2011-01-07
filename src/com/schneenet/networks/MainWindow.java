@@ -2,30 +2,28 @@ package com.schneenet.networks;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 
 	private GamePanel panel;
-	private JRadioButtonMenuItem sizeEasyMenuItem;
-	private JRadioButtonMenuItem sizeMediumMenuItem;
-	private JRadioButtonMenuItem sizeHardMenuItem;
-	private JRadioButtonMenuItem sizeExpertMenuItem;
-	private JRadioButtonMenuItem sizeCustomMenuItem;
-	private ButtonGroup sizeGroup;
 	private int difficulty_h;
 	private int difficulty_w;
 	private boolean use_routers;
@@ -35,6 +33,15 @@ public class MainWindow extends JFrame {
 		// Content pane
 		panel = new GamePanel();
 		panel.addMouseListener(panel);
+		panel.addComponentListener(new ComponentListener() {
+			public void componentResized(ComponentEvent e) {
+				pack();
+			}
+			// Don't care
+			public void componentShown(ComponentEvent e) {}
+			public void componentHidden(ComponentEvent e) {}
+			public void componentMoved(ComponentEvent e) {}
+		});
 		
 		// Set up window
 		this.setTitle("Networks");
@@ -61,7 +68,6 @@ public class MainWindow extends JFrame {
 		});
 		gameMenu.add(newGameItem);
 		gameMenu.add(new JSeparator());
-		sizeGroup = new ButtonGroup();
 		JMenu difficultyMenu = new JMenu("Difficulty");
 		ActionListener sizeListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -71,34 +77,48 @@ public class MainWindow extends JFrame {
 				panel.setDifficulty(difficulty_w, difficulty_h, use_routers);
 			}
 		};
-		sizeEasyMenuItem = new JRadioButtonMenuItem("Easy (5 x 5)");
+		JMenuItem sizeEasyMenuItem = new JMenuItem("Easy (5 x 5)");
 		sizeEasyMenuItem.setActionCommand("5x5");
 		sizeEasyMenuItem.addActionListener(sizeListener);
-		sizeGroup.add(sizeEasyMenuItem);
 		difficultyMenu.add(sizeEasyMenuItem);
-		sizeMediumMenuItem = new JRadioButtonMenuItem("Medium (7 x 7)");
+		JMenuItem sizeMediumMenuItem = new JMenuItem("Medium (7 x 7)");
 		sizeMediumMenuItem.setActionCommand("7x7");
 		sizeMediumMenuItem.addActionListener(sizeListener);
-		sizeGroup.add(sizeMediumMenuItem);
 		difficultyMenu.add(sizeMediumMenuItem);
-		sizeHardMenuItem = new JRadioButtonMenuItem("Hard (9 x 9)");
+		JMenuItem sizeHardMenuItem = new JMenuItem("Hard (9 x 9)");
 		sizeHardMenuItem.setActionCommand("9x9");
 		sizeHardMenuItem.addActionListener(sizeListener);
-		sizeGroup.add(sizeHardMenuItem);
 		difficultyMenu.add(sizeHardMenuItem);
-		sizeExpertMenuItem = new JRadioButtonMenuItem("Expert (11 x 11)");
+		JMenuItem sizeExpertMenuItem = new JMenuItem("Expert (11 x 11)");
 		sizeExpertMenuItem.setActionCommand("11x11");
 		sizeExpertMenuItem.addActionListener(sizeListener);
-		sizeGroup.add(sizeExpertMenuItem);
 		difficultyMenu.add(sizeExpertMenuItem);
-		sizeCustomMenuItem = new JRadioButtonMenuItem("Custom...");
+		JMenuItem sizeCustomMenuItem = new JMenuItem("Custom...");
 		sizeCustomMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO Custom size dialog and updating on OK
+				// Custom size dialog and updating on OK
+				final JTextField widthField = new JTextField(4);				
+				final JTextField heightField = new JTextField(4);
+				final JComponent[] inputs = new JComponent[] {
+					new JLabel("Columns (3 - 15): "),
+					widthField,
+					new JLabel("Rows (3 - 15): "),
+					heightField
+				};
+				int result = JOptionPane.showConfirmDialog(MainWindow.this, inputs, "Custom Size", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					difficulty_w = Integer.parseInt(widthField.getText());
+					if (difficulty_w < 3) difficulty_w = 3;
+					if (difficulty_w > 15) difficulty_w = 15;
+					difficulty_h = Integer.parseInt(heightField.getText());
+					if (difficulty_h < 3) difficulty_h = 3;
+					if (difficulty_h > 15) difficulty_h = 15;
+					panel.setDifficulty(difficulty_w, difficulty_h, use_routers);
+				}
 			}
 		});
-		sizeGroup.add(sizeCustomMenuItem);
+		sizeEasyMenuItem.setSelected(true);
 		difficultyMenu.add(sizeCustomMenuItem);
 		difficultyMenu.add(new JSeparator());
 		final JCheckBoxMenuItem useRoutersMenuItem = new JCheckBoxMenuItem("Use Routers");
@@ -108,7 +128,6 @@ public class MainWindow extends JFrame {
 				panel.setDifficulty(difficulty_w, difficulty_h, use_routers);
 			}
 		});
-		sizeGroup.getSelection();
 		difficultyMenu.add(useRoutersMenuItem);
 		gameMenu.add(difficultyMenu);
 		gameMenu.add(new JSeparator());

@@ -1,5 +1,6 @@
 package com.schneenet.networks;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -30,7 +31,8 @@ public class GamePanel extends JPanel implements MouseListener {
 		grid_h = 5;
 		grid_w = 5;
 		use_routers = false;
-		theBoard = GameBoard.createBoard(grid_w, grid_h, use_routers);
+
+		newGame();
 		
 		//TODO Set up the GamePanel
 		
@@ -58,6 +60,9 @@ public class GamePanel extends JPanel implements MouseListener {
 		theBoard = GameBoard.createBoard(grid_w, grid_h, use_routers);
 		
 		//TODO New game action
+		Dimension d = new Dimension(grid_w * GameBoard.GRID_SIZE, grid_h * GameBoard.GRID_SIZE);
+		this.setPreferredSize(d);
+		this.setSize(d);
 		
 		
 	}

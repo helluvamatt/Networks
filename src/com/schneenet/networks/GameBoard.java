@@ -9,7 +9,7 @@ import java.awt.Image;
  */
 public class GameBoard {
 
-	public static final int GRID_SIZE = 32;
+	public static final int GRID_SIZE = 48;
 	
 	private int board_h;
 	private int board_w;
