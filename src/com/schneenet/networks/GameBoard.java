@@ -25,12 +25,20 @@ public class GameBoard {
 		boardData[y * board_w + x] = b;
 	}
 	
+	public GameBlock getBlockAt(int x, int y) {
+		return boardData[y * board_w + x];
+	}
+	
 	public int getBoardHeight() {
 		return board_h;
 	}
 	
 	public int getBoardWidth() {
 		return board_w;
+	}
+	
+	public boolean isBlockAnimating(int x, int y) {
+		return boardData[y * board_w + x].isBlockAnimating();
 	}
 	
 	public Image getTextureFor(int x, int y) {

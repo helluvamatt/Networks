@@ -3,16 +3,6 @@ package com.schneenet.networks;
 import java.awt.Image;
 
 public abstract class GameBlock {
-
-	/**
-	 * Boolean indicating if this block is connected to the server (via RouterBlocks, WireBlocks, or the ServerBlock)
-	 */
-	protected boolean lit;
-	
-	/**
-	 * 4-element array telling us if the 4 cardinal directions have wires leading out of this block
-	 */
-	protected boolean[] connectedPoints;
 	
 	/**
 	 * What happens when the block is clicked? (Should rotate the block)
@@ -20,9 +10,21 @@ public abstract class GameBlock {
 	public abstract void blockClicked();
 	
 	/**
-	 * Get the correctly orientated and lit texture into an Image object
+	 * Get the correctly oriented and lit texture into an Image object
 	 * @return Image object with the texture
 	 */
 	public abstract Image getTextureState();
+	
+	/**
+	 * Check if the block is should be animating a rotating to a new state
+	 * @return True if the block is animating, false otherwise
+	 */
+	public abstract boolean isBlockAnimating();
+	
+	/**
+	 * Find out if this block is lit (or possibly a light source?)
+	 * @return True if the block should be a source of light
+	 */
+	public abstract boolean isLit();
 	
 }

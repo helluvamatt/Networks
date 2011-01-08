@@ -2,6 +2,7 @@ package com.schneenet.networks;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -78,8 +79,17 @@ public class GamePanel extends JPanel implements MouseListener {
 	 * Custom code for painting the game panel.
 	 */
 	public void paint(Graphics g) {
-		//Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g;
 		//TODO Draw the GamePanel
+		for (int y = 0; y < grid_h; y++) {
+			for (int x = 0; x < grid_w; x++) {
+				if (theBoard.isBlockAnimating(x, y)) {
+					//TODO Handle block rotating animations
+				} else {
+					g2d.drawImage(theBoard.getTextureFor(x, y), x * GameBoard.GRID_SIZE, y * GameBoard.GRID_SIZE, this);
+				}
+			}
+		}
 	}
 
 	/**
