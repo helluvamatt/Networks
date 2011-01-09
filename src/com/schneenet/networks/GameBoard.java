@@ -11,8 +11,8 @@ public class GameBoard {
 
 	public static final int GRID_SIZE = 48;
 	
-	private int board_h;
-	private int board_w;
+	private static int board_h;
+	private static int board_w;
 	private GameBlock[] boardData;
 	
 	protected GameBoard(int w, int h) {
@@ -29,16 +29,16 @@ public class GameBoard {
 		return boardData[y * board_w + x];
 	}
 	
-	public int getBoardHeight() {
+	public static int getBoardHeight() {
 		return board_h;
 	}
 	
-	public int getBoardWidth() {
+	public static int getBoardWidth() {
 		return board_w;
 	}
 	
-	public boolean isBlockAnimating(int x, int y) {
-		return boardData[y * board_w + x].isBlockAnimating();
+	public boolean animateBlock(int x, int y) {
+		return boardData[y * board_w + x].animateBlock(this);
 	}
 	
 	public Image getTextureFor(int x, int y) {

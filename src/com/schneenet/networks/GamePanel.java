@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -83,11 +84,11 @@ public class GamePanel extends JPanel implements MouseListener {
 		//TODO Draw the GamePanel
 		for (int y = 0; y < grid_h; y++) {
 			for (int x = 0; x < grid_w; x++) {
-				if (theBoard.isBlockAnimating(x, y)) {
-					//TODO Handle block rotating animations
-				} else {
-					g2d.drawImage(theBoard.getTextureFor(x, y), x * GameBoard.GRID_SIZE, y * GameBoard.GRID_SIZE, this);
-				}
+				theBoard.animateBlock(x, y);
+				GameBlock theBlock = theBoard.getBlockAt(x, y);
+				AffineTransform xform = AffineTransform.getRotateInstance(theBlock.getRotationRadians(), 16, 16);
+				xform.translate(x * GameBoard.GRID_SIZE, y * GameBoard.GRID_SIZE);
+				g2d.drawImage(theBoard.getTextureFor(x, y), xform, this);
 			}
 		}
 	}

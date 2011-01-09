@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class ServerBlock extends WireBlock {
 
+	public ServerBlock(int x, int y, int type) {
+		super(x, y, type);
+	}
+
 	@Override
 	public Image getTextureState() {
 		// Start with wires underneath
@@ -19,7 +23,8 @@ public class ServerBlock extends WireBlock {
 	/**
 	 * ServerBlocks are always a light source.
 	 */
-	public boolean isLit() {
+	@Override
+	public boolean isLit(GameBoard parent) {
 		return true;
 	}
 

@@ -4,9 +4,18 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ComputerBlock extends WireBlock {
-
-	//TODO Need limitation in code for computer blocks to only be created with one wire leading out of the center
 	
+	/**
+	 * ComputerBlock constructor
+	 * <br /><br />
+	 * ComputerBlock is limited to a single wire (type 0)
+	 * @param x X-coordinate
+	 * @param y Y-coordinate
+	 */
+	public ComputerBlock(int x, int y) {
+		super(x, y, 0);
+	}
+
 	@Override
 	public Image getTextureState() {
 		// Start with wires underneath

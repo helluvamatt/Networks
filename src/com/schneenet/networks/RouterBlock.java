@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class RouterBlock extends WireBlock {
 
+	public RouterBlock(int x, int y, int type) {
+		super(x, y, type);
+	}
+
 	@Override
 	public Image getTextureState() {
 		// Start with wires underneath
